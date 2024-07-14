@@ -32,7 +32,7 @@ class HistoryFile():
     def write_lines(self):
         self.file.seek(0)
         self.file.truncate()
-        for ip in set(self.linesp[::-1][:5]):
+        for ip in set(self.lines[::-1][:5]):
             # reverse the list (last connected in front) and limit to 5
             self.file.write("{}\n".format(ip))
 
@@ -77,7 +77,8 @@ class MyDialog(QDialog):
         flatpak run --command=sdl-freerdp com.freerdp.FreeRDP \
         /v:{} +dynamic-resolution +clipboard /sec:nla \
         /gfx:progressive,avc444,mask:0xf0 /network:auto /rfx /f /scale:140 \
-        /drive:~/Downloads,Download".format(_ip))
+        /drive:~/Downloads,Download /auto-reconnect-max-retries:retries:10 \
+        +auto-reconnect".format(_ip))
         subprocess.Popen(cmd, env=env)
 
         self.history.lines.insert(0, _ip)
